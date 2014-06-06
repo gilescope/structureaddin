@@ -14,6 +14,8 @@ namespace StructureAddIn
         {
             project.Title = forrest[0].LineItem.Summary;
 
+            ClearExistingTasks(project);
+
             foreach (var tree in forrest)
             {
                 PreOrderVisitor(tree, node =>
@@ -38,6 +40,14 @@ namespace StructureAddIn
             project.Application.FilterApply("Incomplete Tasks");
             project.Application.LevelNow(true);
             project.Application.OutlineIndent();
+        }
+
+        private static void ClearExistingTasks(Project project)
+        {
+            while (project.Tasks.Count > 0)
+            {
+                project.Tasks[1].Delete(); // Tasks are indexed from '1' (VBA throwback)
+            }
         }
 
         private void PreOrderVisitor(ITree tree, Action<ITree> visit)
