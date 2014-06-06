@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui" onLoad="Ribbon_Load">
+  <ribbon>
+    <tabs>
+      <tab idMso="TabAddIns">
+        <group id="MyGroup"
+               label="Structure Addin">
+          <editBox label="Username" id="username" getText="GetText_Username" onChange="UsernameChanged" />
+          <editBox label="Password" id="password" getText="GetText_Password" onChange="PasswordChanged" />
+          <checkBox label="Remember Password" id="rememberPassword" getPressed="GetPressed_SavePassword" onAction="RememberPasswordChanged" />
+          <editBox label="JIRA URL" id="url" getText="GetText_JIRAURL" onChange="JIRAURLChanged" />
+          <comboBox label="Structure" id="structure" getText="GetText_Structure" onChange="StructureChanged" />
+          <button label="Import" id="importButton" onAction="Import"/>
+        </group>
+      </tab>
+    </tabs>
+  </ribbon>
+</customUI>
+
