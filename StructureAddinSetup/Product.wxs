@@ -7,9 +7,21 @@
     
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
+      <!-- Upgrade/@Id must match Product/@UpgradeCode -->
+      <Upgrade Id="55ad134e-2b9a-4c64-9ce1-b81d559a1dda">
+        <UpgradeVersion
+          Property="PREVIOUSFOUND"
+          Minimum="0.0.0.0" IncludeMinimum="yes"
+          Maximum="0.1.1.0" IncludeMaximum="no"
+          />
+      </Upgrade>
     
-		<MajorUpgrade DowngradeErrorMessage="A newer version of StructureAddin is already installed." />
-		<MediaTemplate />
+      <InstallExecuteSequence>
+      <RemoveExistingProducts After="InstallInitialize"/> 
+    </InstallExecuteSequence>
+    
+		<!--MajorUpgrade DowngradeErrorMessage="A newer version of StructureAddin is already installed." /-->
+		<MediaTemplate EmbedCab="yes" />
 
 		<Feature Id="ProductFeature" Title="StructureAddinSetup" Level="1">
 			<ComponentGroupRef Id="ProductComponents" />
