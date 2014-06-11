@@ -61,7 +61,6 @@ namespace StructureAddIn
             //project.Activate();
             
             new Renderer().Render(project, forrest);
-            //project.SaveAs(@"C:\Users\gilescope\My.mpp");
         }
 
         public static void StartProject()
@@ -81,7 +80,6 @@ namespace StructureAddIn
                 //project.Activate();
                 
                 Task newtask = project.Tasks.Add("Friday");
-                project.SaveAs(@"C:\Users\gilescope\My.mpp");
 
                 // Enumerate the tasks
                 foreach (Task task in project.Tasks)

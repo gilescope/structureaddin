@@ -15,3 +15,9 @@ The rules are:
 	3. Siblings with '||' at the start of the summary can be done in parallel (assuming different assignee).
 	
 	4. Assignees, Remaining estimates and Due Dates are respected.
+
+Project Goals:
+
+By design the import is one-way from JIRA. This forces there to be a single golden source of up-to-date 
+project information. The aim of this project is to remove the disconnect / reconsiliation of the high level project 
+plan (managed upwards) with what's actually happening on the ground in JIRA.

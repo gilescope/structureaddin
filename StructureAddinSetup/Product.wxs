@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Id="*" Name="StructureAddin for Microsoft Project" 
+           Language="1033" Version="0.1.1.0" 
+           Manufacturer="AlgoMasters" 
+           UpgradeCode="55ad134e-2b9a-4c64-9ce1-b81d559a1dda">
+    
+    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+    
+		<MajorUpgrade DowngradeErrorMessage="A newer version of StructureAddin is already installed." />
+		<MediaTemplate />
+
+		<Feature Id="ProductFeature" Title="StructureAddinSetup" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+		</Feature>
+
+    <WixVariable Id="WixUILicenseRtf"
+      Value="..\license.rtf" />
+
+    <UIRef Id="WixUI_Minimal"/>
+
+  </Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="INSTALLFOLDER" Name="StructureAddin" />
+			</Directory>
+		</Directory>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+			<Component Id="ProductComponent" Guid="31ad134e-2b9a-4c64-9ce1-b81d559a1ada">
+        <File Id="StructureAddin.dll" 
+              Source="..\StructureAddin\bin\Release\StructureAddin.dll" 
+              KeyPath="yes" Checksum="yes"/>
+        <File Id="StructureAddin.pdb"
+              Source="..\StructureAddin\bin\Release\StructureAddin.pdb"
+              Checksum="yes"/>
+        <File Id="StructureAddin.vsto"
+              Source="..\StructureAddin\bin\Release\StructureAddin.vsto"
+              Checksum="yes"/>
+        <File Id="StructureAddin.dll.config"
+              Source="..\StructureAddin\bin\Release\StructureAddin.dll.config"
+              Checksum="yes"/>
+        <File Id="StructureAddin.dll.manifest"
+              Source="..\StructureAddin\bin\Release\StructureAddin.dll.manifest"
+              Checksum="yes"/>
+
+        <File Id="StructureAddinAPI.dll"
+              Source="..\StructureAddin\bin\Release\StructureAddinAPI.dll"
+              Checksum="yes"/>
+        <File Id="StructureAddinAPI.pdb"
+              Source="..\StructureAddin\bin\Release\StructureAddinAPI.pdb"
+              Checksum="yes"/>
+
+        <File Id="StructureInterfaces.dll"
+              Source="..\StructureAddin\bin\Release\StructureInterfaces.dll"
+              Checksum="yes"/>
+        <File Id="StructureInterfaces.pdb"
+              Source="..\StructureAddin\bin\Release\StructureInterfaces.pdb"
+              Checksum="yes"/>
+
+        <File Id="StructureSource.dll"
+              Source="..\StructureAddin\bin\Release\StructureSource.dll"
+              Checksum="yes"/>
+        <File Id="StructureSource.pdb"
+              Source="..\StructureAddin\bin\Release\StructureSource.pdb"
+              Checksum="yes"/>
+
+        <File Id="Microsoft.Office.Tools.Common.v4.0.Utilities.dll"
+              Source="..\StructureAddin\bin\Release\Microsoft.Office.Tools.Common.v4.0.Utilities.dll"
+              Checksum="yes"/>
+        <File Id="Microsoft.Office.Tools.Common.v4.0.Utilities.xml"
+              Source="..\StructureAddin\bin\Release\Microsoft.Office.Tools.Common.v4.0.Utilities.xml"
+              Checksum="yes"/>
+
+      </Component>
+      <Component Id="RegistryComponent" Guid="41ad134e-2b9a-4c64-9ce1-b81d559a1ada">
+        <RegistryKey Root="HKCU"
+                     Key="Software\Microsoft\Office\MS Project\Addins\StructureAddIn">
+          <RegistryValue Type="string" Name="Description" Value="StructureAddIn" />
+          <RegistryValue Type="string" Name="FriendlyName" Value="StructureAddIn"/>
+          <RegistryValue Type="string" Name="Manifest" Value="file:///C:/Program Files (x86)/StructureAddin/StructureAddIn.vsto|vstolocal"/>
+          <RegistryValue Type="integer" Name="LoadBehavior" Value="3"/>
+        </RegistryKey>        
+      </Component>
+		</ComponentGroup>
+	</Fragment>
+</Wix>

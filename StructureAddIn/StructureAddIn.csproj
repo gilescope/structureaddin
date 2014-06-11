@@ -172,6 +172,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <None Include="app.config" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -206,6 +207,8 @@
       <Project>{ec69d12d-899c-4e8b-81bc-5d66487beddf}</Project>
       <Name>StructureAddinAPI</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
