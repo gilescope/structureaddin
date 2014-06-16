@@ -18,22 +18,30 @@ namespace StructureAddIn
 
             foreach (var tree in forrest)
             {
+                if (!tree.AnyIncluded)
+                {
+                    continue;
+                }
+
                 PreOrderVisitor(tree, node =>
-                {                    
-                    Task newtask = project.Tasks.Add(node.LineItem.Summary);
-                    newtask.OutlineLevel = (short)(node.Level + 1);
-                    
-                    if (node.LineItem.Resolution != null)
-                        newtask.PercentComplete = "100%";
-                    
-                    if (node.LineItem.Assignee != null)
-                        newtask.ResourceNames = node.LineItem.Assignee;
+                {
+                    if (node.Included)
+                    {
+                        Task newtask = project.Tasks.Add(node.LineItem.Summary);
+                        newtask.OutlineLevel = (short) (node.Level + 1);
 
-                    if (node.LineItem.OriginalEstimateInDays != null)
-                        newtask.Duration = node.LineItem.OriginalEstimateInDays;
+                        if (node.LineItem.Resolution != null)
+                            newtask.PercentComplete = "100%";
 
-                    if (node.LineItem.DueDate != null)
-                        newtask.Finish = node.LineItem.DueDate;
+                        if (node.LineItem.Assignee != null)
+                            newtask.ResourceNames = node.LineItem.Assignee;
+
+                        if (node.LineItem.OriginalEstimateInDays != null)
+                            newtask.Duration = node.LineItem.OriginalEstimateInDays;
+
+                        if (node.LineItem.DueDate != null)
+                            newtask.Finish = node.LineItem.DueDate;
+                    }
                 });
             }
 

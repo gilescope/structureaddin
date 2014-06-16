@@ -86,9 +86,9 @@ namespace StructureAddIn
         }
 
         [UsedImplicitly]
-        public void JIRAURLChanged(Office.IRibbonControl control, string isPressed)
+        public void JIRAURLChanged(Office.IRibbonControl control, string updatedText)
         {
-            addinSettings.JIRAURL = isPressed;
+            addinSettings.JIRAURL = updatedText;
         }
 
         [UsedImplicitly]
@@ -97,6 +97,17 @@ namespace StructureAddIn
             return addinSettings.JIRAURL;
         }
 
+        [UsedImplicitly]
+        public void JQLChanged(Office.IRibbonControl control, string updatedText)
+        {
+            addinSettings.JQL = updatedText;
+        }
+
+        [UsedImplicitly]
+        public string GetText_JQL(Office.IRibbonControl control)
+        {
+            return addinSettings.JQL;
+        }
 
         [UsedImplicitly]
         public void StructureChanged(Office.IRibbonControl control, string structureName)

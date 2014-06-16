@@ -12,6 +12,7 @@ namespace StructureInterfaces
         private string username;
         private SecureString password;
         private string jiraurl;
+        private string jql;
 
         public String Structure
         {
@@ -49,6 +50,16 @@ namespace StructureInterfaces
             set
             {
                 jiraurl = value; 
+                OnPropertyChanged();
+            }
+        }
+
+        public string JQL
+        {
+            get { return jql; }
+            set
+            {
+                jql = value;
                 OnPropertyChanged();
             }
         }

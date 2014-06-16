@@ -26,5 +26,32 @@ namespace StructureAddinTests
             Assert.That(result != null);
             Assert.That(result[0].LineItem.Summary, Is.EqualTo("Top Task 1"));
         }
+
+        [Test, Category("integration")]
+        public void IwantToBeAbleToRetrieveAFilteredStructureBasedOnArbitraryJQL()
+        {
+            var api = new API(Test.Settings);
+
+            var result = api.GetStructure(new Structure(102, "TestStructure"), "resolution = Unresolved");
+            Assert.That(result != null);
+            Assert.That(result[0].LineItem.Summary, Is.EqualTo("Top Task 1"));
+            var firstTree = result.First();
+            var middleTask = firstTree.Children.Single();
+            Assert.That(middleTask.Children.First().Included);
+            Assert.That(!middleTask.Children.Skip(1).First().Included);
+        }
+        [Test, Category("integration")]
+        public void IwantToBeAbleToRetrieveAFilteredStructureBasedOnArbitraryJQL2()
+        {
+            var api = new API(Test.Settings);
+
+            var result = api.GetStructure(new Structure(102, "TestStructure"), "resolution != Unresolved");
+            Assert.That(result != null);
+            Assert.That(result[0].LineItem, Is.Null);
+            var firstTree = result.First();
+            var middleTask = firstTree.Children.Single();
+            Assert.That(!middleTask.Children.First().Included);
+            Assert.That(middleTask.Children.Skip(1).First().Included);
+        }
     }
 }

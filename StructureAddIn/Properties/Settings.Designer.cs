@@ -70,5 +70,17 @@ namespace StructureAddIn.Properties {
                 this["Password"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string JQL {
+            get {
+                return ((string)(this["JQL"]));
+            }
+            set {
+                this["JQL"] = value;
+            }
+        }
     }
 }

@@ -57,6 +57,13 @@
       <Project>{ec69d12d-899c-4e8b-81bc-5d66487beddf}</Project>
       <Name>StructureAddinAPI</Name>
     </ProjectReference>
+    <ProjectReference Include="..\StructureSource\StructureSource.csproj">
+      <Project>{9e4efd39-e8f2-44c8-92ac-b74040f4793c}</Project>
+      <Name>StructureSource</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -56,34 +56,56 @@ namespace StructureSource
             return new Structures(root);
         }
 
-        public List<ITree> GetForrest(Structure structure)
+        public Forrest GetAndParseForrest(Structure structure)
         {
             //Get forrest
-            string url = baseURL + "rest/structure/1.0/structure/" + structure.Id.ToString(CultureInfo.InvariantCulture).Trim() + "/forest";
-            Stream results= GetURL(url, user, pass);
+            string url = baseURL + "rest/structure/1.0/structure/" +
+                         structure.Id.ToString(CultureInfo.InvariantCulture).Trim() + "/forest";
+            Stream results = GetURL(url, user, pass);
             XmlReader reader = JsonReaderWriterFactory.CreateJsonReader(results, new XmlDictionaryReaderQuotas());
 
             //Parse forrest
             XElement root = XElement.Load(reader);
             string forrest = root.XPathSelectElement("//formula").Value;
-            Forrest result = Tree.ParseForrest(forrest);
+            return Tree.ParseForrest(forrest);
+        }
+
+        public Forrest GetForrest(Structure structure, string JQLFilter)
+        {
+            Forrest result = GetAndParseForrest(structure);
 
             //Now get JIRAS
-            string jql = "issue in structure(\""+ structure.Name +"\")";
-            url = baseURL + "rest/api/2/search?jql="+HttpUtility.UrlEncode(jql)+"&maxResults=5000";
-            results = GetURL(url, user, pass);
-            reader = JsonReaderWriterFactory.CreateJsonReader(results, new XmlDictionaryReaderQuotas());
-            root = XElement.Load(reader);
+            XElement selectedJiras = GetJIRAs(structure, JQLFilter);
+            BindJIRAsToForrest(selectedJiras, result);
 
+            return result;
+        }
+
+        private XElement GetJIRAs(Structure structure, string JQLFilter)
+        {
+            string jql = "issue in structure(\"" + structure.Name + "\")";
+            if (!string.IsNullOrWhiteSpace(JQLFilter))
+            {
+                jql = jql + " AND " + JQLFilter;
+            }
+
+            string url = baseURL + "rest/api/2/search?jql=" + HttpUtility.UrlEncode(jql) + "&maxResults=5000";
+            var results = GetURL(url, user, pass);
+            var reader = JsonReaderWriterFactory.CreateJsonReader(results, new XmlDictionaryReaderQuotas());
+            var root = XElement.Load(reader);
+            return root;
+        }
+
+        public static void BindJIRAsToForrest(XElement root, Forrest result)
+        {
             var jiras = root.XPathSelectElements("//issues//item");
             foreach (var xJIRA in jiras)
             {
                 int jiraId = Convert.ToInt32(xJIRA.XPathSelectElement("id").Value);
-                var tree = (Tree)result.FindById(jiraId);
-                tree.LineItem = new LineItem (xJIRA);
+                var tree = (Tree) result.FindById(jiraId);
+                tree.Included = true;
+                tree.LineItem = new LineItem(xJIRA);
             }
-
-            return result;
         }
 
         private Stream GetURL(string url, string user, SecureString pass)

@@ -9,7 +9,7 @@ using StructureInterfaces;
 
 namespace StructureSource
 {
-    public class Forrest : List<ITree>
+    public class Forrest : List<ITree>, ITree
     {
         readonly Dictionary<int, Tree> nodeLookup = new Dictionary<int, Tree>();
 
@@ -18,10 +18,33 @@ namespace StructureSource
             nodeLookup.Add(id, tree);    
         }
 
+        public bool AnyIncluded
+        {
+            get
+            {
+                return Children.Any(child => child.AnyIncluded);
+            }
+        }
+
         public ITree FindById(int id)
         {
             return nodeLookup[id];
-        }        
+        }
+
+        public int Id { get { return -1; } }
+
+        public ILineItem LineItem { get { return null; } }
+
+        public IEnumerable<ITree> Children
+        {
+            get { return this; } 
+        }
+        
+        public bool Included { get { return false; } set {} }
+        
+        public int Level { get { return -1; } }
+        
+        public ITree Previous { get { return null; } }
     }
 
     public class Tree : ITree
@@ -34,8 +57,7 @@ namespace StructureSource
             Level = entry.Level;
             Children = children;
             Previous = previous;
-            Included = true;
-
+           
             forrest.Add(entry.Id, this);
         }
 
@@ -67,9 +89,9 @@ namespace StructureSource
 
             var nodeStack = new Stack<Tree>();
             
-            for (int i = 0; i < nodes.Length; i++)
+            foreach (string tree in nodes)
             {
-                var entry = new Entry(nodes[i]);
+                var entry = new Entry(tree);
                 if (nodeStack.Count == 0)
                 {
                     Debug.Assert(entry.Level == 0);
@@ -120,6 +142,14 @@ namespace StructureSource
         public int Level { get; private set; }
         
         public ITree Previous { get; private set; }
+
+        public bool AnyIncluded
+        {
+            get
+            {
+                return Children.Any(child => child.AnyIncluded);
+            }
+        }
     }
 
     public class LineItem: ILineItem

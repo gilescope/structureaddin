@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using NUnit.Framework;
 using StructureAddinAPI;
 using StructureInterfaces;
+using StructureSource;
 
 namespace StructureAddinTests
 {
@@ -105,6 +107,68 @@ namespace StructureAddinTests
             
             Assert.That(forrest[1].Id, Is.EqualTo(22));
             Assert.That(forrest[1].Children.Count(), Is.EqualTo(1));
-        }        
+        }
+
+        [Test]
+        public void CanIncludeCorrectJIRAs()
+        {
+            var api = new API(null);
+
+            //All selected
+            Forrest forrest = MakeForrest(api, @"
+            11:0,
+                22:1", 
+            @"<xml><issues>
+                <item><id>11</id></item>
+                <item><id>22</id></item>
+            </issues></xml>");
+
+            var tree = forrest.Children.Single();
+            Assert.That(tree.Included);
+            Assert.That(tree.Children.Single().Included);
+
+            //Top selected
+            forrest = MakeForrest(api, @"
+            11:0,
+                22:1",
+            @"<xml><issues>
+                <item><id>11</id></item>
+            </issues></xml>");
+
+            tree = forrest.Children.Single();
+            Assert.That(tree.Included);
+            Assert.That(!tree.Children.Single().Included);
+
+            //Bottom selected
+            forrest = MakeForrest(api, @"
+            11:0,
+                22:1",
+            @"<xml><issues>
+                <item><id>22</id></item>
+            </issues></xml>");
+
+            tree = forrest.Children.Single();
+            Assert.That(tree.Included);
+            Assert.That(tree.Id == 22);
+            Assert.That(!tree.Children.Any());
+
+            //None selected
+            forrest = MakeForrest(api, @"
+            11:0,
+                22:1",
+            @"<xml><issues>
+            </issues></xml>");
+
+            Assert.That(!forrest.Any());
+        }
+
+        private static Forrest MakeForrest(API api, string forrestIds, string xml)
+        {
+            Forrest forrest = api.ParseForrest(forrestIds);
+
+            XElement jiras = XElement.Parse(xml);
+            api.BindJIRAsToForrest(forrest, jiras);
+            return forrest;
+        }
     }
 }

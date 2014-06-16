@@ -17,5 +17,6 @@ namespace StructureInterfaces
 
         int Level { get; }
         ITree Previous { get; }
+        bool AnyIncluded { get; }
     }
 }

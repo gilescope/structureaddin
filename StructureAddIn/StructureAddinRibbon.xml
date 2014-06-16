@@ -9,6 +9,7 @@
           <editBox label="Password" id="password" getText="GetText_Password" onChange="PasswordChanged" />
           <checkBox label="Remember Password" id="rememberPassword" getPressed="GetPressed_SavePassword" onAction="RememberPasswordChanged" />
           <editBox label="JIRA URL" id="url" getText="GetText_JIRAURL" onChange="JIRAURLChanged" />
+          <editBox label="JQL" id="jql" getText="GetText_JQL" onChange="JQLChanged" />
           <comboBox label="Structure" id="structure" getText="GetText_Structure" onChange="StructureChanged" />
           <button label="Import" id="importButton" onAction="Import"/>
         </group>

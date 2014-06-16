@@ -52,7 +52,7 @@ namespace StructureAddIn
 
             //TODO can improve: push to UI as combo
             var selectedStructure = api.GetAvailableStructures().First(s=>s.Name.Equals(settings.Structure));
-            var forrest = api.GetStructure(selectedStructure);
+            var forrest = api.GetStructure(selectedStructure, settings.JQL);
 
             var project = Application.ActiveProject;
             //                projects = projectApp.Projects;
