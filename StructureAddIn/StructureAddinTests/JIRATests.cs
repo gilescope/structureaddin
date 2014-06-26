@@ -32,7 +32,7 @@ namespace StructureAddinTests
         {
             var api = new API(Test.Settings);
 
-            var result = api.GetStructure(new Structure(102, "TestStructure"), "resolution = Unresolved");
+            var result = api.GetStructure(new Structure(102, "TestStructure"), "issue in structure(TestStructure) and resolution = Unresolved");
             Assert.That(result != null);
             Assert.That(result[0].LineItem.Summary, Is.EqualTo("Top Task 1"));
             var firstTree = result.First();
@@ -45,13 +45,13 @@ namespace StructureAddinTests
         {
             var api = new API(Test.Settings);
 
-            var result = api.GetStructure(new Structure(102, "TestStructure"), "resolution != Unresolved");
+            var result = api.GetStructure(new Structure(102, "TestStructure"), "issue in structure(TestStructure) and resolution != Unresolved");
             Assert.That(result != null);
-            Assert.That(result[0].LineItem, Is.Null);
-            var firstTree = result.First();
-            var middleTask = firstTree.Children.Single();
-            Assert.That(!middleTask.Children.First().Included);
-            Assert.That(middleTask.Children.Skip(1).First().Included);
+            Assert.That(result[0].LineItem, Is.Not.Null);
+            var onlyResolvedTask = result.First();
+            Assert.That(!onlyResolvedTask.Children.Any());
+            Assert.That(onlyResolvedTask.Level == 0);
+
         }
     }
 }

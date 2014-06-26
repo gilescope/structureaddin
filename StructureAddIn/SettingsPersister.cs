@@ -17,7 +17,8 @@ namespace StructureAddIn
                 Password = SecureHelper.ToSecureString(Settings.Default.Password),//TODO improve.
                 Username = Settings.Default.Username,
                 SavePassword = Settings.Default.Password != null,
-                Structure = Settings.Default.Structure
+                Structure = Settings.Default.Structure,
+                JQL = Settings.Default.JQL
             };
             settings.PropertyChanged += addinSettings_PropertyChanged;
 
@@ -32,6 +33,9 @@ namespace StructureAddIn
             {
                 case "JIRAURL":
                     Settings.Default.JIRAURL = addinSettings.JIRAURL;
+                    break;
+                case "JQL":
+                    Settings.Default.JQL = addinSettings.JQL;
                     break;
                 case "Password":
                     if (addinSettings.SavePassword)

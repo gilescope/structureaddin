@@ -125,6 +125,7 @@ namespace StructureAddinTests
 
             var tree = forrest.Children.Single();
             Assert.That(tree.Included);
+            Assert.That(tree.Level == 0);
             Assert.That(tree.Children.Single().Included);
 
             //Top selected
@@ -137,6 +138,7 @@ namespace StructureAddinTests
 
             tree = forrest.Children.Single();
             Assert.That(tree.Included);
+            Assert.That(tree.Level == 0);
             Assert.That(!tree.Children.Single().Included);
 
             //Bottom selected
@@ -150,7 +152,9 @@ namespace StructureAddinTests
             tree = forrest.Children.Single();
             Assert.That(tree.Included);
             Assert.That(tree.Id == 22);
+            Assert.That(tree.Level == 0);
             Assert.That(!tree.Children.Any());
+            Assert.That(tree.AnyIncluded);
 
             //None selected
             forrest = MakeForrest(api, @"
@@ -158,8 +162,9 @@ namespace StructureAddinTests
                 22:1",
             @"<xml><issues>
             </issues></xml>");
-
+           
             Assert.That(!forrest.Any());
+            Assert.That(forrest.Level < 0);            
         }
 
         private static Forrest MakeForrest(API api, string forrestIds, string xml)

@@ -106,6 +106,12 @@ namespace StructureAddIn
         [UsedImplicitly]
         public string GetText_JQL(Office.IRibbonControl control)
         {
+            if (string.IsNullOrWhiteSpace(addinSettings.JQL) 
+                && !string.IsNullOrWhiteSpace(addinSettings.Structure))
+            {
+                addinSettings.JQL = "issue in structure(\"" + addinSettings.Structure + "\")";
+            }
+
             return addinSettings.JQL;
         }
 

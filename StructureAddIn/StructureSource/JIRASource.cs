@@ -86,7 +86,7 @@ namespace StructureSource
             string jql = "issue in structure(\"" + structure.Name + "\")";
             if (!string.IsNullOrWhiteSpace(JQLFilter))
             {
-                jql = jql + " AND " + JQLFilter;
+                jql = JQLFilter;
             }
 
             string url = baseURL + "rest/api/2/search?jql=" + HttpUtility.UrlEncode(jql) + "&maxResults=5000";
@@ -96,16 +96,78 @@ namespace StructureSource
             return root;
         }
 
-        public static void BindJIRAsToForrest(XElement root, Forrest result)
+        public static void BindJIRAsToForrest(XElement root, Forrest forrest)
         {
             var jiras = root.XPathSelectElements("//issues//item");
             foreach (var xJIRA in jiras)
             {
                 int jiraId = Convert.ToInt32(xJIRA.XPathSelectElement("id").Value);
-                var tree = (Tree) result.FindById(jiraId);
+                var tree = (Tree) forrest.FindById(jiraId);
                 tree.Included = true;
                 tree.LineItem = new LineItem(xJIRA);
             }
+
+            MinimiseForrest(forrest);
+        }
+
+        /// <summary>
+        /// If a subtree in a structure is selected, but no parent of it is then it should be
+        /// pulled up to top level.
+        /// </summary>
+        /// <param name="forrest"></param>
+       static private void MinimiseForrest(Forrest forrest)
+        {
+            var result = new List<ITree>();
+
+            AddSelected(forrest, result);
+
+            forrest.Clear();
+            forrest.AddRange(result);
+
+            foreach (var tree in forrest.Children)
+            {
+                ResetLevel(tree, 0);
+            }
+       }
+
+        static private void ResetLevel(ITree forrest, int level)
+        {
+            ((Tree)forrest).Level = level;
+            foreach (var child in forrest.Children)
+            {
+                ResetLevel(child, level + 1);
+            }
+        }
+
+        static private void AddSelected(IEnumerable<ITree> children, List<ITree> result)
+        {
+            foreach (var child in children)
+            {
+                if (child.Included)
+                {
+                    result.Add(child);
+                }
+                else
+                {
+                    AddSelected(child.Children, result);
+                }
+            }
+        }
+
+        private static void PruneTreesWithNothingINcluded(Forrest forrest)
+        {
+            var toRemove = new List<ITree>();
+
+            foreach (var tree in forrest)
+            {
+                if (!tree.AnyIncluded)
+                {
+                    toRemove.Add(tree);
+                    continue;
+                }
+            }
+
+            toRemove.ForEach(tree => forrest.Remove(tree));
         }
 
         private Stream GetURL(string url, string user, SecureString pass)

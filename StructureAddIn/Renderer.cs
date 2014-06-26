@@ -12,7 +12,8 @@ namespace StructureAddIn
     {
         public void Render(Project project, List<ITree> forrest)
         {
-            project.Title = forrest[0].LineItem.Summary;
+            //project.Views[1]. TODO add Hyperlink column
+            //project.Title = forrest[0].LineItem.Summary ;
 
             ClearExistingTasks(project);
 
@@ -27,7 +28,7 @@ namespace StructureAddIn
                 {
                     if (node.Included)
                     {
-                        Task newtask = project.Tasks.Add(node.LineItem.Summary);
+                        Task newtask = project.Tasks.Add(node.LineItem.Summary + " (" + node.LineItem.Key + ")");
                         newtask.OutlineLevel = (short) (node.Level + 1);
 
                         if (node.LineItem.Resolution != null)

@@ -2,15 +2,19 @@
 <customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui" onLoad="Ribbon_Load">
   <ribbon>
     <tabs>
-      <tab idMso="TabAddIns">
-        <group id="MyGroup"
-               label="Structure Addin">
+      <tab id="TabStructure" label="STRUCTURE">
+        <group id="MyGroup1"
+               label="Config">
           <editBox label="Username" id="username" getText="GetText_Username" onChange="UsernameChanged" />
           <editBox label="Password" id="password" getText="GetText_Password" onChange="PasswordChanged" />
           <checkBox label="Remember Password" id="rememberPassword" getPressed="GetPressed_SavePassword" onAction="RememberPasswordChanged" />
-          <editBox label="JIRA URL" id="url" getText="GetText_JIRAURL" onChange="JIRAURLChanged" />
-          <editBox label="JQL" id="jql" getText="GetText_JQL" onChange="JQLChanged" />
-          <comboBox label="Structure" id="structure" getText="GetText_Structure" onChange="StructureChanged" />
+          <editBox label="JIRA URL" id="url" screentip="JIRA URL. E.g. http://localhost:8080/" getText="GetText_JIRAURL" onChange="JIRAURLChanged" />
+        </group>
+        <group id="MyGroup2"
+                 label="Source">
+
+            <editBox label="JQL" id="jql" getText="GetText_JQL" onChange="JQLChanged" />
+          <comboBox label="Structure" id="structure" screentip="The name of the structure." getText="GetText_Structure" onChange="StructureChanged" />
           <button label="Import" id="importButton" onAction="Import"/>
         </group>
       </tab>

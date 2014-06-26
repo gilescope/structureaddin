@@ -28,57 +28,10 @@ namespace StructureAddinAPI
         public Forrest BindJIRAsToForrest(Forrest forrest, XElement selectedJiras)
         {
             JIRASource.BindJIRAsToForrest(selectedJiras, forrest);
-            MinimiseForrest(forrest);
+            
             return forrest;
         }
 
-        /// <summary>
-        /// If a subtree in a structure is selected, but no parent of it is then it should be
-        /// pulled up to top level.
-        /// </summary>
-        /// <param name="forrest"></param>
-        private void MinimiseForrest(Forrest forrest)
-        {
-            var result = new List<ITree>();
-
-            AddSelected(forrest, result);
-
-            //TODO recalc level...?
-
-            forrest.Clear();
-            forrest.AddRange(result);
-        }
-
-        private void AddSelected(IEnumerable<ITree> children, List<ITree> result)
-        {
-            foreach (var child in children)
-            {
-                if (child.Included)
-                {
-                    result.Add(child);
-                }
-                else
-                {
-                    AddSelected(child.Children, result);
-                }
-            }
-        }
-
-        private static void PruneTreesWithNothingINcluded(Forrest forrest)
-        {
-            var toRemove = new List<ITree>();
-
-            foreach (var tree in forrest)
-            {
-                if (!tree.AnyIncluded)
-                {
-                    toRemove.Add(tree);
-                    continue;
-                }
-            }
-
-            toRemove.ForEach(tree => forrest.Remove(tree));
-        }
 
         public Forrest ParseForrest(string forrest)
         {

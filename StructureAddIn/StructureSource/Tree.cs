@@ -22,13 +22,15 @@ namespace StructureSource
         {
             get
             {
-                return Children.Any(child => child.AnyIncluded);
+                return this.Included || Children.Any(child => child.AnyIncluded);
             }
         }
 
         public ITree FindById(int id)
         {
-            return nodeLookup[id];
+            Tree result;
+            nodeLookup.TryGetValue(id, out result);
+            return result;
         }
 
         public int Id { get { return -1; } }
@@ -139,7 +141,7 @@ namespace StructureSource
             return tree;
         }
 
-        public int Level { get; private set; }
+        public int Level { get; internal set; }
         
         public ITree Previous { get; private set; }
 
@@ -147,7 +149,7 @@ namespace StructureSource
         {
             get
             {
-                return Children.Any(child => child.AnyIncluded);
+                return Included || Children.Any(child => child.AnyIncluded);
             }
         }
     }
